@@ -1,22 +1,22 @@
 ---
-title: "arb.3"
+title: "Drawing inference from statistical models, and statistical power"
 format: html
 editor_options: 
   chunk_output_type: console
 ---
 
-**ARBEIDSKRAV 3**
-
-*Drawing inference from statistical models, and statistical power*
+*ARBEIDSKRAV 3*
 
 ```{r}
 #| echo: false
 #| warning: false
 library(tidyverse)
+library(gt)
 ```
 
 
 ```{r}
+#| echo: false
 set.seed(1)
 population <- rnorm(1000000, mean = 1.5, sd = 3)
 
@@ -41,7 +41,7 @@ sd(samp1$y)/sqrt(8)
 ```
 
 
-*Q1: Explain the estimate, SE, t-value, and p-value from the regression models that we created previously (m1 and m2)*
+*Explain the estimate, SE, t-value, and p-value from the regression models that we created previously (m1 and m2)*
 
 En lineær regresjon har funksjonen $y = ax + b$ og består av et stigningstall/slope (a) og et konstantledd/intercept (b). Det er ikke alltid det er like åpenlyst hvordan likningen skal se ut, og vi er derfor nødt til å bruke den kunnskapen vi har til å estimere både slope og intercept. Dette gjøres ved at R genererer en likning som avviker minst mulig fra alle datapunktene. Da får vi et estimat til koeffisientene som forteller oss hvor langt unna virkeligheten den estimerte likningen er. I m1 er estimatet 1,290 og i m2 er det 1,4799. 
 
@@ -54,15 +54,16 @@ T-verdien er koeffisienten delt på SE. Vi vil gjerne at t-verdien skal være h�
 
 P-verdien forteller oss hvorvoidt noe er statistisk signifikant eller ikke. Grensen er ofte satt til 0,05 eller 5%, og dersom p-verdien er lavere enn dette er det statostisk signifikant. Det p-verdien forteller oss er hvor sannsynlig det er at vi vil observere det vi observerte eller noe mer ekstremt dersom vi repeter prosessen igjen. I m1 er p-verdien 0,378 og i m2 er den 0,000315. Her er begge under 0,05 men m2 er tilnærmet lik null. 
 
-*Q2: Discuss what contributes to the different results in the two studies (m1 and m2)*
+*Discuss what contributes to the different results in the two studies (m1 and m2)*
 
 Totalt har vi en populasjon på 100000 stk med individer som har vært gjennom to ulike behandlinger. Ut fra denne populasjonen velger vi ut to grupper. Den ene gruppen (m1) har 8 idivider mens den andre gruppen (m2) har 40. Til tross for at de to gruppene består av tilfeldige individer fra den orignale populasjonen, kan man ikke være sikker på at så små grupper representerer en hel populasjon da fordelingen i gruppene ikke nødvendivis tilsvarer fordelingen i populajsonen til tross for randomisering. Dette gjelder særlig m1 da hvert enkelt individ utgjør en mye større prosentandel av gruppen, som gir rom for større skjevheter enn hva som er tilfellet i den faktiske populajsonen. Et lite utvalg slik som i m1 vil også bety større grad av usikkerhet, som kommer frem i estimatet og SE. 
 
-*Q3: Why do we use the shaded area in the lower and upper tail of the t-distribution*
+*Why do we use the shaded area in the lower and upper tail of the t-distribution*
 
 Målet med statistikken er å si noe om en populasjon vha. et utvalg. Hvis utvalget er et tilfeldig utvalg fra populasjonen, har vi mulighet til å estimere egenskaper i populasjonen med en estimert usikkerhet. Figuren viser en normalfordelingskurve. Vi kan beregne hvor mange teoretiske utvalg som vil være mer ekstreme enn f.eks. 95% av alle utvalg, og det er dette som er de mørke områdene i figuren. Med gjentatte utvalg, vil 95% av alle konfidensintervall inneholde gjennomsnittet i populasjonen. De siste 5% er de mest ekstreme tilfellene. Slike figurer illustrerer bl.a. standardavvik og hvor grensen for statistisk signifikans går, som er de mest ekstreme 5%.
 
 ```{r}
+#| echo: false
 # Create data frames to store the model estimates
 results_8 <- data.frame(estimate = rep(NA, 1000), 
                       se = rep(NA, 1000), 
@@ -103,9 +104,10 @@ for(i in 1:1000) {
 results <- bind_rows(results_8, results_40)
 ```
 
-*Q4: Using the "results" data frame, calculate the standard deviation of the estimate variable, and the average of the se variable for each of the study sample sizes (8 and 40). Explain why these numbers are very similar. How can you define the Standard Error (SE) in light of these calculations?*
+*Using the "results" data frame, calculate the standard deviation of the estimate variable, and the average of the se variable for each of the study sample sizes (8 and 40). Explain why these numbers are very similar. How can you define the Standard Error (SE) in light of these calculations?*
 
 ```{r}
+#| echo: false
 mean(results_40$se)
 mean(results_8$se)
 
@@ -119,9 +121,10 @@ Standardavviket til "estimate" i gruppen med 40 deltakere er ~0,484 mens det i g
 
 For både "estimate" og "se" ser vi at usikkerheten er mye større i gruppen med kun 8 sammenliknet med gruppen med 40. Dette bidrar til å vise hvor viktig utvalgsstørrelsen er for resultatene og med hvor stir sikkerhet vi kan stole på dataene. 
 
-*Q5: Using the "results" data frame, create a histogram (see example code below) of the p-values from each study sample-size. How do you interpret these histograms, what do they tell you about the effect of sample size on statistical power?*
+*Using the "results" data frame, create a histogram (see example code below) of the p-values from each study sample-size. How do you interpret these histograms, what do they tell you about the effect of sample size on statistical power?*
 
 ```{r}
+#| echo: false
 results %>%
   ggplot(aes(pval)) + 
   geom_histogram() +
@@ -137,13 +140,24 @@ library(pwr)
 pwr.t.test(n = 40, sig.level = 0.05, d = 1.5/3, type = "one.sample")
 ```
 
-*Q6: Using the "results" data frame, calculate the number of studies from each sample size that declare a statistical significant effect (specify a threshold for "a" your significance level)*
+*Using the "results" data frame, calculate the number of studies from each sample size that declare a statistical significant effect (specify a threshold for "a" your significance level)*
 
 ```{r}
-
+#| echo: false
+results_8 %>% 
+  full_join(results_40,
+            by = c("estimate",
+                   "se",
+                   "pval",
+                   "n")) %>% 
+  group_by(n) %>% 
+  filter(pval < 0.05) %>% 
+  summarise(antall = n()) %>%
+  gt()
 ```
+I datasettet med 40 er det 865 som har en statistisk signifikant effekt, mens det i datasettet med 8 kun er 227 som har en statistisk signifikant effekt.
 
-*Q7: Using the pwr package, calculate the power of a one-sample t-test, with a effect size of 1.5/3, your specified significance level and sample sizes 8 and 40. Explain the results in the light of your simulations*
+*Using the pwr package, calculate the power of a one-sample t-test, with a effect size of 1.5/3, your specified significance level and sample sizes 8 and 40. Explain the results in the light of your simulations*
 
 ```{r}
 pwr.t.test(n = 40, sig.level = 0.05, d = 1.5/3, type = "one.sample")
@@ -151,15 +165,13 @@ pwr.t.test(n = 40, sig.level = 0.05, d = 1.5/3, type = "one.sample")
 pwr.t.test(n = 8, sig.level = 0.05, d = 1.5/3, type = "one.sample")
 ```
 
-For gruppene med både 40 og 8 er effektstørrelen (d) 0,5, mens "power" er ~0,869 i gruppen med 40 og ~0,232 i gruppen med 8. Testens "power" er et tall mellom 0 og 1 som indikerer hvor sannsynlig det er å observere en signifikant endring dersom den faktisk eksisterer en endring. Jo nærmere 1 "power" er, desto mer sannsynlig er det at testen klarer å påvise en endring. Her kommer et også frem at det er en stor forskjell mellom gruppen me d8 og gruppen med 40, der gruppen med 40 har en mye høyere power enn gruppen med 8.
+For gruppene med både 40 og 8 er effektstørrelen (d) 0,5, mens "power" er ~0,869 i gruppen med 40 og ~0,232 i gruppen med 8. Testens "power" er et tall mellom 0 og 1 som indikerer hvor sannsynlig det er å observere en signifikant endring dersom den faktisk eksisterer en endring. Jo nærmere 1 "power" er, desto mer sannsynlig er det at testen klarer å påvise en endring. Her kommer et også frem at det er en stor forskjell mellom gruppen med 8 og gruppen med 40, der gruppen med 40 har en mye høyere power enn gruppen med 8.
 
-*Q8: Using the new data frame with results from studies of a population with an average effect of zero, create new histograms with a significance level of 5%. How many studies would give you a “false positive” result if you did many repeated studies?*
+*Using the new data frame with results from studies of a population with an average effect of zero, create new histograms with a significance level of 5%. How many studies would give you a “false positive” result if you did many repeated studies?*
 
+```{r}
 
-
-
-
-
+```
 
 
 
