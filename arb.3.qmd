@@ -139,7 +139,9 @@ pwr.t.test(n = 40, sig.level = 0.05, d = 1.5/3, type = "one.sample")
 
 *Q6: Using the "results" data frame, calculate the number of studies from each sample size that declare a statistical significant effect (specify a threshold for "a" your significance level)*
 
+```{r}
 
+```
 
 *Q7: Using the pwr package, calculate the power of a one-sample t-test, with a effect size of 1.5/3, your specified significance level and sample sizes 8 and 40. Explain the results in the light of your simulations*
 
@@ -149,7 +151,7 @@ pwr.t.test(n = 40, sig.level = 0.05, d = 1.5/3, type = "one.sample")
 pwr.t.test(n = 8, sig.level = 0.05, d = 1.5/3, type = "one.sample")
 ```
 
-For gruppene med både 40 og 8 er effektstørrelen (d) 0,5, mens "power" er ~0,869 i gruppen med 40 og ~0,232 i gruppen med 8. 
+For gruppene med både 40 og 8 er effektstørrelen (d) 0,5, mens "power" er ~0,869 i gruppen med 40 og ~0,232 i gruppen med 8. Testens "power" er et tall mellom 0 og 1 som indikerer hvor sannsynlig det er å observere en signifikant endring dersom den faktisk eksisterer en endring. Jo nærmere 1 "power" er, desto mer sannsynlig er det at testen klarer å påvise en endring. Her kommer et også frem at det er en stor forskjell mellom gruppen me d8 og gruppen med 40, der gruppen med 40 har en mye høyere power enn gruppen med 8.
 
 *Q8: Using the new data frame with results from studies of a population with an average effect of zero, create new histograms with a significance level of 5%. How many studies would give you a “false positive” result if you did many repeated studies?*
 
