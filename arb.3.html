@@ -20,40 +20,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -153,17 +119,17 @@ Coefficients:
 <pre><code>[1] 1.251293</code></pre>
 </div>
 </div>
-<p><em>Explain the estimate, SE, t-value, and p-value from the regression models that we created previously (m1 and m2)</em></p>
+<p><strong>Explain the estimate, SE, t-value, and p-value from the regression models that we created previously (m1 and m2)</strong></p>
 <p>En lineær regresjon har funksjonen <span class="math inline">\(y = ax + b\)</span> og består av et stigningstall/slope (a) og et konstantledd/intercept (b). Det er ikke alltid det er like åpenlyst hvordan likningen skal se ut, og vi er derfor nødt til å bruke den kunnskapen vi har til å estimere både slope og intercept. Dette gjøres ved at R genererer en likning som avviker minst mulig fra alle datapunktene. Da får vi et estimat til koeffisientene som forteller oss hvor langt unna virkeligheten den estimerte likningen er. I m1 er estimatet 1,290 og i m2 er det 1,4799.</p>
 <p>Standard error (SE) forteller oss noe om hvor usikker koeffisienten er, og brukes ofte til å lage konfidensintervall. SE regnes ut slik: <span class="math display">\[SE = \frac{SD}{\sqrt{n}}\]</span></p>
 <p>I m1 er SE 1,290 mens den er 1,480 i m2. Det er veldig like SE men m1 kan se ut til å være noe mer sikker enn m2 da SE er lavere.</p>
 <p>T-verdien er koeffisienten delt på SE. Vi vil gjerne at t-verdien skal være høy fordi det betyr at SE er lite sammenliknet med koeffisienten og vi kan være mer sikker på resultatet vårt. I m1 er t-verdien 0,94 og i m2 er den 3,953. T-verdien er videre brukt til å finne p-verdien.</p>
 <p>P-verdien forteller oss hvorvoidt noe er statistisk signifikant eller ikke. Grensen er ofte satt til 0,05 eller 5%, og dersom p-verdien er lavere enn dette er det statostisk signifikant. Det p-verdien forteller oss er hvor sannsynlig det er at vi vil observere det vi observerte eller noe mer ekstremt dersom vi repeter prosessen igjen. I m1 er p-verdien 0,378 og i m2 er den 0,000315. Her er begge under 0,05 men m2 er tilnærmet lik null.</p>
-<p><em>Discuss what contributes to the different results in the two studies (m1 and m2)</em></p>
+<p><strong>Discuss what contributes to the different results in the two studies (m1 and m2)</strong></p>
 <p>Totalt har vi en populasjon på 100000 stk med individer som har vært gjennom to ulike behandlinger. Ut fra denne populasjonen velger vi ut to grupper. Den ene gruppen (m1) har 8 idivider mens den andre gruppen (m2) har 40. Til tross for at de to gruppene består av tilfeldige individer fra den orignale populasjonen, kan man ikke være sikker på at så små grupper representerer en hel populasjon da fordelingen i gruppene ikke nødvendivis tilsvarer fordelingen i populajsonen til tross for randomisering. Dette gjelder særlig m1 da hvert enkelt individ utgjør en mye større prosentandel av gruppen, som gir rom for større skjevheter enn hva som er tilfellet i den faktiske populajsonen. Et lite utvalg slik som i m1 vil også bety større grad av usikkerhet, som kommer frem i estimatet og SE.</p>
-<p><em>Why do we use the shaded area in the lower and upper tail of the t-distribution</em></p>
+<p><strong>Why do we use the shaded area in the lower and upper tail of the t-distribution</strong></p>
 <p>Målet med statistikken er å si noe om en populasjon vha. et utvalg. Hvis utvalget er et tilfeldig utvalg fra populasjonen, har vi mulighet til å estimere egenskaper i populasjonen med en estimert usikkerhet. Figuren viser en normalfordelingskurve. Vi kan beregne hvor mange teoretiske utvalg som vil være mer ekstreme enn f.eks. 95% av alle utvalg, og det er dette som er de mørke områdene i figuren. Med gjentatte utvalg, vil 95% av alle konfidensintervall inneholde gjennomsnittet i populasjonen. De siste 5% er de mest ekstreme tilfellene. Slike figurer illustrerer bl.a. standardavvik og hvor grensen for statistisk signifikans går, som er de mest ekstreme 5%.</p>
-<p><em>Using the “results” data frame, calculate the standard deviation of the estimate variable, and the average of the se variable for each of the study sample sizes (8 and 40). Explain why these numbers are very similar. How can you define the Standard Error (SE) in light of these calculations?</em></p>
+<p><strong>Using the “results” data frame, calculate the standard deviation of the estimate variable, and the average of the se variable for each of the study sample sizes (8 and 40). Explain why these numbers are very similar. How can you define the Standard Error (SE) in light of these calculations?</strong></p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.4696954</code></pre>
@@ -181,7 +147,7 @@ Coefficients:
 <p>Gjennomsnittet til “se” i gruppen med 40 er ~0,470 eller 47% mens det i gruppen med 8 er ~1,021 eller 102%. Det er et stort standard error i begge gruppene, men et meget stort standard error i gruppen med kun 8 stk. Dette viser til hvor stor usikkerhet det er i “se” resultatene fra dataene. For eksempel kan resultatene i gruppen med 40 variere med 47% både opp og ned.</p>
 <p>Standardavviket til “estimate” i gruppen med 40 deltakere er ~0,484 mens det i gruppen med 8 er ~1,071. Standardavviket forteller oss om spredningen av dataene rundt gjennomsnittet. Et lavt standardavvik betyr at det er lite spredning mens et større standardavvik betyr en større spredning som betyr større usikkerhet.</p>
 <p>For både “estimate” og “se” ser vi at usikkerheten er mye større i gruppen med kun 8 sammenliknet med gruppen med 40. Dette bidrar til å vise hvor viktig utvalgsstørrelsen er for resultatene og med hvor stir sikkerhet vi kan stole på dataene.</p>
-<p><em>Using the “results” data frame, create a histogram (see example code below) of the p-values from each study sample-size. How do you interpret these histograms, what do they tell you about the effect of sample size on statistical power?</em></p>
+<p><strong>Using the “results” data frame, create a histogram (see example code below) of the p-values from each study sample-size. How do you interpret these histograms, what do they tell you about the effect of sample size on statistical power?</strong></p>
 <div class="cell">
 <div class="cell-output cell-output-stderr">
 <pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
@@ -207,7 +173,7 @@ Coefficients:
     alternative = two.sided</code></pre>
 </div>
 </div>
-<p><em>Using the “results” data frame, calculate the number of studies from each sample size that declare a statistical significant effect (specify a threshold for “a” your significance level)</em></p>
+<p><strong>Using the “results” data frame, calculate the number of studies from each sample size that declare a statistical significant effect (specify a threshold for “a” your significance level)</strong></p>
 <div class="cell">
 <div class="cell-output-display">
 
@@ -672,9 +638,8 @@ Coefficients:
 </div>
 </div>
 <p>I datasettet med 40 er det 865 som har en statistisk signifikant effekt, mens det i datasettet med 8 kun er 227 som har en statistisk signifikant effekt.</p>
-<p><em>Using the pwr package, calculate the power of a one-sample t-test, with a effect size of 1.5/3, your specified significance level and sample sizes 8 and 40. Explain the results in the light of your simulations</em></p>
+<p><strong>Using the pwr package, calculate the power of a one-sample t-test, with a effect size of 1.5/3, your specified significance level and sample sizes 8 and 40. Explain the results in the light of your simulations</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pwr.t.test</span>(<span class="at">n =</span> <span class="dv">40</span>, <span class="at">sig.level =</span> <span class="fl">0.05</span>, <span class="at">d =</span> <span class="fl">1.5</span><span class="sc">/</span><span class="dv">3</span>, <span class="at">type =</span> <span class="st">"one.sample"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
      One-sample t test power calculation 
@@ -685,7 +650,6 @@ Coefficients:
           power = 0.8693981
     alternative = two.sided</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pwr.t.test</span>(<span class="at">n =</span> <span class="dv">8</span>, <span class="at">sig.level =</span> <span class="fl">0.05</span>, <span class="at">d =</span> <span class="fl">1.5</span><span class="sc">/</span><span class="dv">3</span>, <span class="at">type =</span> <span class="st">"one.sample"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
      One-sample t test power calculation 
@@ -698,7 +662,8 @@ Coefficients:
 </div>
 </div>
 <p>For gruppene med både 40 og 8 er effektstørrelen (d) 0,5, mens “power” er ~0,869 i gruppen med 40 og ~0,232 i gruppen med 8. Testens “power” er et tall mellom 0 og 1 som indikerer hvor sannsynlig det er å observere en signifikant endring dersom den faktisk eksisterer en endring. Jo nærmere 1 “power” er, desto mer sannsynlig er det at testen klarer å påvise en endring. Her kommer et også frem at det er en stor forskjell mellom gruppen med 8 og gruppen med 40, der gruppen med 40 har en mye høyere power enn gruppen med 8.</p>
-<p><em>Using the new data frame with results from studies of a population with an average effect of zero, create new histograms with a significance level of 5%. How many studies would give you a “false positive” result if you did many repeated studies?</em></p>
+<p><strong>Using the new data frame with results from studies of a population with an average effect of zero, create new histograms with a significance level of 5%. How many studies would give you a “false positive” result if you did many repeated studies?</strong></p>
+<p>Dersom vi har 2000 observasjoner, slik som i results_null, og signifikansnivået settes til 0,05 eller 5% kan vi anta at 100 av disse vil gi en falsk positiv. <span class="math inline">\(0,05 * 2000 = 100\)</span></p>
 
 </main>
 <!-- /main column -->
