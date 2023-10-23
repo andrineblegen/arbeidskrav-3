@@ -5,18 +5,19 @@ editor_options:
   chunk_output_type: console
 ---
 
+
 **ARBEIDSKRAV 3**
 
 *Drawing inference from statistical models, and statistical power*
 
-```{r}
-#| echo: false
-#| warning: false
-library(tidyverse)
-```
 
+::: {.cell}
 
-```{r}
+:::
+
+::: {.cell}
+
+```{.r .cell-code}
 set.seed(1)
 population <- rnorm(1000000, mean = 1.5, sd = 3)
 
@@ -30,15 +31,108 @@ m1 <- lm(y ~ 1, data = samp1)
 m2 <- lm(y ~ 1, data = samp2)
 
 summary(m1)
-summary(m2)
+```
 
+::: {.cell-output .cell-output-stdout}
+```
+
+Call:
 lm(formula = y ~ 1, data = samp1)
 
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-6.5322 -1.2523 -0.0883  1.3540  4.8692 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)
+(Intercept)    1.840      1.251    1.47    0.185
+
+Residual standard error: 3.539 on 7 degrees of freedom
+```
+:::
+
+```{.r .cell-code}
+summary(m2)
+```
+
+::: {.cell-output .cell-output-stdout}
+```
+
+Call:
+lm(formula = y ~ 1, data = samp2)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-5.6557 -2.2883  0.2636  2.2549  6.4212 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)   
+(Intercept)   1.5642     0.4774   3.276  0.00221 **
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 3.019 on 39 degrees of freedom
+```
+:::
+
+```{.r .cell-code}
+lm(formula = y ~ 1, data = samp1)
+```
+
+::: {.cell-output .cell-output-stdout}
+```
+
+Call:
+lm(formula = y ~ 1, data = samp1)
+
+Coefficients:
+(Intercept)  
+       1.84  
+```
+:::
+
+```{.r .cell-code}
 mean(samp1$y)
+```
+
+::: {.cell-output .cell-output-stdout}
+```
+[1] 1.839727
+```
+:::
+
+```{.r .cell-code}
 coef(m1)
+```
+
+::: {.cell-output .cell-output-stdout}
+```
+(Intercept) 
+   1.839727 
+```
+:::
+
+```{.r .cell-code}
 sd(samp1$y)
+```
+
+::: {.cell-output .cell-output-stdout}
+```
+[1] 3.539191
+```
+:::
+
+```{.r .cell-code}
 sd(samp1$y)/sqrt(8)
 ```
+
+::: {.cell-output .cell-output-stdout}
+```
+[1] 1.251293
+```
+:::
+:::
+
 
 
 *Q1: Explain the estimate, SE, t-value, and p-value from the regression models that we created previously (m1 and m2)*
@@ -48,21 +142,27 @@ En lineær regresjon har funksjonen $y = ax + b$ og består av et stigningstall/
 Standard error (SE) forteller oss noe om hvor usikker koeffisienten er, og brukes ofte til å lage konfidensintervall. SE regnes ut slik: 
 $$SE = \frac{SD}{\sqrt{n}}$$
 
-I m1 er SE 1,290 mens den er 1,480 i m2. Det er veldig like SE men m1 kan se ut til å være noe mer sikker enn m2 da SE er lavere. 
+I m1 er SE 1,290 mens den er 1,4799 i m2. Det er veldig like SE men m1 kan se ut til å være noe mer sikker enn m2 da SE er lavere. 
 
 T-verdien er koeffisienten delt på SE. Vi vil gjerne at t-verdien skal være høy fordi det betyr at SE er lite sammenliknet med koeffisienten og vi kan være mer sikker på resultatet vårt. I m1 er t-verdien 0,94 og i m2 er den 3,953. T-verdien er videre brukt til å finne p-verdien.
 
 P-verdien forteller oss hvorvoidt noe er statistisk signifikant eller ikke. Grensen er ofte satt til 0,05 eller 5%, og dersom p-verdien er lavere enn dette er det statostisk signifikant. Det p-verdien forteller oss er hvor sannsynlig det er at vi vil observere det vi observerte eller noe mer ekstremt dersom vi repeter prosessen igjen. I m1 er p-verdien 0,378 og i m2 er den 0,000315. Her er begge under 0,05 men m2 er tilnærmet lik null. 
 
+
 *Q2: Discuss what contributes to the different results in the two studies (m1 and m2)*
 
 Totalt har vi en populasjon på 100000 stk med individer som har vært gjennom to ulike behandlinger. Ut fra denne populasjonen velger vi ut to grupper. Den ene gruppen (m1) har 8 idivider mens den andre gruppen (m2) har 40. Til tross for at de to gruppene består av tilfeldige individer fra den orignale populasjonen, kan man ikke være sikker på at så små grupper representerer en hel populasjon da fordelingen i gruppene ikke nødvendivis tilsvarer fordelingen i populajsonen til tross for randomisering. Dette gjelder særlig m1 da hvert enkelt individ utgjør en mye større prosentandel av gruppen, som gir rom for større skjevheter enn hva som er tilfellet i den faktiske populajsonen. Et lite utvalg slik som i m1 vil også bety større grad av usikkerhet, som kommer frem i estimatet og SE. 
+
+++ 
 
 *Q3: Why do we use the shaded area in the lower and upper tail of the t-distribution*
 
 Målet med statistikken er å si noe om en populasjon vha. et utvalg. Hvis utvalget er et tilfeldig utvalg fra populasjonen, har vi mulighet til å estimere egenskaper i populasjonen med en estimert usikkerhet. Figuren viser en normalfordelingskurve. Vi kan beregne hvor mange teoretiske utvalg som vil være mer ekstreme enn f.eks. 95% av alle utvalg, og det er dette som er de mørke områdene i figuren. Med gjentatte utvalg, vil 95% av alle konfidensintervall inneholde gjennomsnittet i populasjonen. De siste 5% er de mest ekstreme tilfellene. Slike figurer illustrerer bl.a. standardavvik og hvor grensen for statistisk signifikans går, som er de mest ekstreme 5%.
 
-```{r}
+
+::: {.cell}
+
+```{.r .cell-code}
 # Create data frames to store the model estimates
 results_8 <- data.frame(estimate = rep(NA, 1000), 
                       se = rep(NA, 1000), 
@@ -99,43 +199,125 @@ for(i in 1:1000) {
   
 }
 
+
 # Save the results in a combined data frame
+
 results <- bind_rows(results_8, results_40)
 ```
+:::
+
 
 *Q4: Using the "results" data frame, calculate the standard deviation of the estimate variable, and the average of the se variable for each of the study sample sizes (8 and 40). Explain why these numbers are very similar. How can you define the Standard Error (SE) in light of these calculations?*
 
-```{r}
-mean(results_40$se)
-mean(results_8$se)
 
+::: {.cell}
+
+```{.r .cell-code}
+mean(results_40$se)
+```
+
+::: {.cell-output .cell-output-stdout}
+```
+[1] 0.4696954
+```
+:::
+
+```{.r .cell-code}
+mean(results_8$se)
+```
+
+::: {.cell-output .cell-output-stdout}
+```
+[1] 1.021374
+```
+:::
+
+```{.r .cell-code}
 sd(results_40$estimate)
+```
+
+::: {.cell-output .cell-output-stdout}
+```
+[1] 0.4838475
+```
+:::
+
+```{.r .cell-code}
 sd(results_8$estimate)
 ```
 
-Gjennomsnittet til "se" i gruppen med 40 er ~0,470 eller 47% mens det i gruppen med 8 er ~1,021 eller 102%. Det er et stort standard error i begge gruppene, men et meget stort standard error i gruppen med kun 8 stk. Dette viser til hvor stor usikkerhet det er i "se" resultatene fra dataene. For eksempel kan resultatene i gruppen med 40 variere med 47% både opp og ned. 
+::: {.cell-output .cell-output-stdout}
+```
+[1] 1.070843
+```
+:::
+:::
 
-Standardavviket til "estimate" i gruppen med 40 deltakere er ~0,484 mens det i gruppen med 8 er ~1,071. Standardavviket forteller oss om spredningen av dataene rundt gjennomsnittet. Et lavt standardavvik betyr at det er lite spredning mens et større standardavvik betyr en større spredning som betyr større usikkerhet. 
 
-For både "estimate" og "se" ser vi at usikkerheten er mye større i gruppen med kun 8 sammenliknet med gruppen med 40. Dette bidrar til å vise hvor viktig utvalgsstørrelsen er for resultatene og med hvor stir sikkerhet vi kan stole på dataene. 
+Gjennomsnittet til "se" i gruppen med 40 er ~0,470 mens det i gruppen med 8 er ~1,021. Standardavviket til "estimate" i gruppen med 40 deltakere er ~0,490 mens det i gruppen med 8 er ~1,062. 
+
+++
 
 *Q5: Using the "results" data frame, create a histogram (see example code below) of the p-values from each study sample-size. How do you interpret these histograms, what do they tell you about the effect of sample size on statistical power?*
 
-```{r}
+
+::: {.cell}
+
+```{.r .cell-code}
 results %>%
   ggplot(aes(pval)) + 
   geom_histogram() +
   facet_wrap(~ n)
+```
 
+::: {.cell-output .cell-output-stderr}
+```
+`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
+:::
+
+::: {.cell-output-display}
+![](arb.3_files/figure-html/unnamed-chunk-5-1.png){width=672}
+:::
+
+```{.r .cell-code}
 results %>%
   filter(pval < 0.05) %>%
   group_by(n) %>%
   summarise(sig_results = n()/1000)
+```
 
+::: {.cell-output .cell-output-stdout}
+```
+# A tibble: 2 × 2
+      n sig_results
+  <dbl>       <dbl>
+1     8       0.227
+2    40       0.865
+```
+:::
+
+```{.r .cell-code}
 library(pwr)
 
 pwr.t.test(n = 40, sig.level = 0.05, d = 1.5/3, type = "one.sample")
 ```
+
+::: {.cell-output .cell-output-stdout}
+```
+
+     One-sample t test power calculation 
+
+              n = 40
+              d = 0.5
+      sig.level = 0.05
+          power = 0.8693981
+    alternative = two.sided
+```
+:::
+:::
+
+
 
 *Q6: Using the "results" data frame, calculate the number of studies from each sample size that declare a statistical significant effect (specify a threshold for "a" your significance level)*
 
@@ -143,15 +325,50 @@ pwr.t.test(n = 40, sig.level = 0.05, d = 1.5/3, type = "one.sample")
 
 *Q7: Using the pwr package, calculate the power of a one-sample t-test, with a effect size of 1.5/3, your specified significance level and sample sizes 8 and 40. Explain the results in the light of your simulations*
 
-```{r}
-pwr.t.test(n = 40, sig.level = 0.05, d = 1.5/3, type = "one.sample")
 
+::: {.cell}
+
+```{.r .cell-code}
+pwr.t.test(n = 40, sig.level = 0.05, d = 1.5/3, type = "one.sample")
+```
+
+::: {.cell-output .cell-output-stdout}
+```
+
+     One-sample t test power calculation 
+
+              n = 40
+              d = 0.5
+      sig.level = 0.05
+          power = 0.8693981
+    alternative = two.sided
+```
+:::
+
+```{.r .cell-code}
 pwr.t.test(n = 8, sig.level = 0.05, d = 1.5/3, type = "one.sample")
 ```
 
+::: {.cell-output .cell-output-stdout}
+```
+
+     One-sample t test power calculation 
+
+              n = 8
+              d = 0.5
+      sig.level = 0.05
+          power = 0.232077
+    alternative = two.sided
+```
+:::
+:::
+
+
 For gruppene med både 40 og 8 er effektstørrelen (d) 0,5, mens "power" er ~0,869 i gruppen med 40 og ~0,232 i gruppen med 8. 
 
+
 *Q8: Using the new data frame with results from studies of a population with an average effect of zero, create new histograms with a significance level of 5%. How many studies would give you a “false positive” result if you did many repeated studies?*
+
 
 
 
