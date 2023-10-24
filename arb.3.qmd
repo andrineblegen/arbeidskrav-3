@@ -190,7 +190,7 @@ results_40 <- data.frame(estimate = rep(NA, 1000),
 # A for loop used to sample 1000 studies, each iteration (i) will draw a new sample
 # from the population. 
 
-for(i in 1:1000) {
+for(i in 1:10000) {
   
   # Draw a sample 
   samp1 <- data.frame(y = sample(population, 8, replace = FALSE))
@@ -219,16 +219,11 @@ results_null <- bind_rows(results_8, results_40)
 
 ```{r}
 #| echo: false
-
+results_null %>%
+  ggplot(aes(pval)) + 
+  geom_histogram() +
+  facet_wrap(~ n)
 ```
 
 Dersom vi har 2000 observasjoner, slik som i results_null, og signifikansnivået settes til 0,05 eller 5% kan vi anta at 100 av disse vil gi en falsk positiv. $0.05 * 2000 = 100$
-
-
-
-
-
-
-
-
 
