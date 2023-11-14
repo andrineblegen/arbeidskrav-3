@@ -1,5 +1,5 @@
 ---
-title: "Drawing inference from statistical models, and statistical power"
+title: "Statistisk inferens"
 format: html
 editor_options: 
   chunk_output_type: console
